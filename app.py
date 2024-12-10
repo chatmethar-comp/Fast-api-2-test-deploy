@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import uvicorn
+from typing import Optional
 
 app = FastAPI()
 
@@ -13,6 +14,10 @@ model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
 # Input Schema
 class Questions(BaseModel):
     questions_with_ids: dict
+
+@app.get("/")
+async def root():
+    return {"message": "Hello, this is the question clustering service."}
 
 @app.post("/cluster-questions")
 def cluster_questions(input_data: Questions):
